@@ -1,0 +1,17 @@
+gvl_install_path: /opt/gvl
+
+SMRT_ROOT: /mnt/gvl/apps/smrtanalysis/
+SMRT_USER: smrtanalysis
+SMRT_GROUP: smrtanalysis
+
+smrt_version: { version: 2.3.0, build: 140936 }
+
+smrt_analysis_package: {
+    src: "https://s3.amazonaws.com/files.pacb.com/software/smrtanalysis/{{ smrt_version.version }}/smrtanalysis_{{ smrt_version.version }}.{{ smrt_version.build }}.run",
+    dest: "smrt_analysis.run"
+}
+
+smrt_analysis_patch: {
+    src: "https://s3.amazonaws.com/files.pacb.com/software/smrtanalysis/{{ smrt_version.version }}/smrtanalysis-patch_{{ smrt_version.version }}.{{ smrt_version.build }}.p4.run",
+    dest: "smrt_patch.run"
+}

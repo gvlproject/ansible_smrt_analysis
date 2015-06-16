@@ -1,0 +1,37 @@
+- name: Create SMRT Analysis group
+  group: name={{ SMRT_GROUP }} state=present
+
+- name: Create SMRT Analysis user
+  user: name={{ SMRT_USER }} comment="SMRT Analysis Owner" group={{ SMRT_GROUP }} shell=/bin/bash
+
+- name: Create target install dir
+  file:
+    path: "{{ SMRT_ROOT }}"
+    state: 'directory'
+    owner: "{{ SMRT_USER }}"
+    group: "{{ SMRT_USER }}"
+    mode: "0755"
+
+- name: Download SMRT Analysis packages
+  get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+  with_items:
+    - "{{ smrt_analysis_package }}"
+    - "{{ smrt_analysis_patch }}"
+
+- name: Run SMRT Analysis installer
+  command: "{{ SMRT_ROOT }}/{{ smrt_analysis_package.dest }} -p {{ SMRT_ROOT }}/{{ smrt_analysis_patch.dest }} --rootdir {{ SMRT_ROOT }}"
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+
+- name: Start SMRT daemons
+  command: $SMRT_ROOT/admin/bin/{{ item }} start
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+  with_items:
+    - smrtportald-init
+    - kodosd
+
+- name: Copy the version info file into GVLDash
+  template: src=version_info.j2 dest={{ gvl_install_path }}/info/smrt_analysis.yml

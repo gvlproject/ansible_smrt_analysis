@@ -1,0 +1,16 @@
+---
+smrt_analysis_info:
+  author: The GVL Project
+  description: Installs SMRT Analysis
+  company: The GVL Project
+  license: MIT
+  min_ansible_version: 1.6
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+  - system
+  - cloud
+  - genomics
+dependencies:
