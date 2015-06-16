@@ -11,9 +11,9 @@
 #
 #   % ansible-playbook -i inventory/builders playbook.yml
 #
-# - hosts: localhost
-#   connection: local
-- hosts: smrt_analysis_hosts
+- hosts: localhost
+  connection: local
+# - hosts: smrt_analysis_hosts
   sudo: yes
   roles:
     - smrt_analysis
