@@ -1,0 +1,4 @@
+sbatch --job-name="${JOB_ID}" --cpus-per-task=${NPROC} -o ${STDOUT_FILE} -e ${STDERR_FILE} ${EXTRAS} <<EOF
+#!/bin/bash
+${CMD}
+EOF

@@ -1,9 +1,11 @@
 gvl_install_path: /opt/gvl
 
-SMRT_ROOT: /mnt/gvl/apps/smrtanalysis/
+SMRT_ROOT: /mnt/gvl/apps/smrtanalysis
 SMRT_USER: smrtanalysis
 SMRT_GROUP: smrtanalysis
 
+smrt_portal_main_port: 9080
+smrt_portal_shutdown_port: 9005
 smrt_version: { version: 2.3.0, build: 140936 }
 
 smrt_analysis_package: {

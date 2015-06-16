@@ -19,19 +19,47 @@
   with_items:
     - "{{ smrt_analysis_package }}"
     - "{{ smrt_analysis_patch }}"
+  register: result
+  until: result|success
+  retries: 1
+
+- name: Stops any running SMRT daemons
+  command: "{{ SMRT_ROOT }}/admin/bin/{{ item }} stop"
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+  with_items:
+    - smrtportald-initd
+    - kodosd.in
+  ignore_errors: yes
 
 - name: Run SMRT Analysis installer
-  command: "{{ SMRT_ROOT }}/{{ smrt_analysis_package.dest }} -p {{ SMRT_ROOT }}/{{ smrt_analysis_patch.dest }} --rootdir {{ SMRT_ROOT }}"
+  command: "{{ SMRT_ROOT }}/{{ smrt_analysis_package.dest }} -p {{ SMRT_ROOT }}/{{ smrt_analysis_patch.dest }} --rootdir {{ SMRT_ROOT }} --batch --ignore-syscheck --dnsname 127.0.0.1 --smrtportal-main-port {{ smrt_portal_main_port }} --smrtportal-shutdown-port {{ smrt_portal_shutdown_port }} --jmstype NONE"
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+
+# Support for SLURM: https://github.com/PacificBiosciences/SMRT-Analysis/issues/78
+- name: Copy files required for SLURM
+  copy: src="SLURM" dest="{{ SMRT_ROOT }}/current/analysis/etc/cluster/" owner={{ SMRT_USER }} group={{ SMRT_GROUP }}
+  sudo: yes
+
+- name: Set SLURM as cluster manager for SMRT portal
+  lineinfile: dest="{{ SMRT_ROOT }}/current/analysis/etc/smrtpipe.rc" regexp="^CLUSTER_MANAGER = BASH" line="CLUSTER_MANAGER = SLURM"
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
 
 - name: Start SMRT daemons
-  command: $SMRT_ROOT/admin/bin/{{ item }} start
+  command: "{{ SMRT_ROOT }}/admin/bin/{{ item }} start"
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
   with_items:
-    - smrtportald-init
-    - kodosd
+    - smrtportald-initd
+    - kodosd.in
+
+- name: Update nginx proxy locations for smrt portal
+  template: src=smrtportal.locations.j2 dest=/etc/nginx/sites-enabled/smrtportal.locations
+
+- name: Reload nginx configuration
+  service: name=nginx state=reloaded
 
 - name: Copy the version info file into GVLDash
   template: src=version_info.j2 dest={{ gvl_install_path }}/info/smrt_analysis.yml
