@@ -13,7 +13,7 @@
     mode: "0755"
 
 - name: Download SMRT Analysis packages
-  get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700
+  get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700 validate_certs=no
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
   with_items:
@@ -48,7 +48,7 @@
   sudo_user: "{{ SMRT_USER }}"
 
 - name: Start SMRT daemons
-  command: "{{ SMRT_ROOT }}/admin/bin/{{ item }} start"
+  command: "nohup {{ SMRT_ROOT }}/admin/bin/{{ item }} start"
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
   with_items:
