@@ -68,7 +68,7 @@
     - kodosd
 
 - name: Restart the Supervisor services
-  supervisorctl: name={{ item }} state=started
+  supervisorctl: name={{ item }} state=restarted
   with_items:
     - smrtportald
     - kodosd
