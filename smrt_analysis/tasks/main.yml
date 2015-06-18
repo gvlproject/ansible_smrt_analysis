@@ -47,19 +47,31 @@
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
 
-- name: Start SMRT daemons
-  command: "nohup {{ SMRT_ROOT }}/admin/bin/{{ item }} start"
-  sudo: yes
-  sudo_user: "{{ SMRT_USER }}"
-  with_items:
-    - smrtportald-initd
-    - kodosd.in
-
 - name: Update nginx proxy locations for smrt portal
   template: src=smrtportal.locations.j2 dest=/etc/nginx/sites-enabled/smrtportal.locations
 
 - name: Reload nginx configuration
   service: name=nginx state=reloaded
+
+- name: Install supervisor package
+  apt: name={{ item }} state=present
+  with_items:
+   - supervisor
+
+- name: Create the Supervisor config file
+  template: src=supervisor_smrt_analysis.conf.j2 dest=/etc/supervisor/conf.d/smrt_analysis.conf
+
+- name: Re-read the Supervisor config files
+  supervisorctl: name={{ item }} state=present
+  with_items:
+    - smrtportald
+    - kodosd
+
+- name: Restart the Supervisor services
+  supervisorctl: name={{ item }} state=started
+  with_items:
+    - smrtportald
+    - kodosd
 
 - name: Copy the version info file into GVLDash
   template: src=version_info.j2 dest={{ gvl_install_path }}/info/smrt_analysis.yml
