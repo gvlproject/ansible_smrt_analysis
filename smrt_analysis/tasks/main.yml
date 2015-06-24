@@ -57,6 +57,7 @@
   apt: name={{ item }} state=present
   with_items:
    - supervisor
+  ignore_errors: yes
 
 - name: Create the Supervisor config file
   template: src=supervisor_smrt_analysis.conf.j2 dest=/etc/supervisor/conf.d/smrt_analysis.conf
