@@ -1,12 +1,12 @@
 [program:smrtportald]
-command={{ SMRT_ROOT }}/admin/bin/smrtportald-initd start
+command={{ SMRT_ROOT }}/admin/bin/smrtportald-initd restart
 user={{ SMRT_USER }}
 directory={{ SMRT_ROOT }}
 autostart=true
 autorestart=false
 
 [program:kodosd]
-command={{ SMRT_ROOT }}/admin/bin/kodosd.in start
+command={{ SMRT_ROOT }}/admin/bin/kodosd.in restart
 user={{ SMRT_USER }}
 directory={{ SMRT_ROOT }}
 autostart=true
