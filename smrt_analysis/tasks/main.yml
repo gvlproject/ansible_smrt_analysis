@@ -18,7 +18,7 @@
     state: 'directory'
     owner: 'ubuntu'
     group: 'ubuntu'
-    mode: "0755"
+    mode: "0777"
 
 - name: Download SMRT Analysis packages
   get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700 validate_certs=no
