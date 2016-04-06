@@ -11,11 +11,20 @@
     owner: "{{ SMRT_USER }}"
     group: "{{ SMRT_USER }}"
     mode: "0755"
+    
+- name: Create tmp dir
+  file:
+    path: "{{ gvl_tmp_path }}"
+    state: 'directory'
+    owner: 'ubuntu'
+    group: 'ubuntu'
+    mode: "0755"
 
 - name: Download SMRT Analysis packages
   get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700 validate_certs=no
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
+  environment: "{{ install_env }}"
   with_items:
     - "{{ smrt_analysis_package }}"
     - "{{ smrt_analysis_patch }}"
