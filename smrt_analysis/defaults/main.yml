@@ -19,6 +19,7 @@ smrt_analysis_patch: {
 }
 
 gvl_tmp_path: "/mnt/gvl/tmp"
+gvl_home_path: "/mnt/galaxy/home"
 
 install_env:
     TEMPDIR: "{{ gvl_tmp_path }}"
