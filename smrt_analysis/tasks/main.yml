@@ -2,7 +2,7 @@
   group: name={{ SMRT_GROUP }} state=present
 
 - name: Create SMRT Analysis user
-  user: name="{{ SMRT_USER }}" comment="SMRT Analysis Owner" group="{{ SMRT_GROUP }}" shell=/bin/bash home="/mnt/galaxy/home/{{ SMRT_USER }}" move_home=yes
+  user: name="{{ SMRT_USER }}" comment="SMRT Analysis Owner" group="{{ SMRT_GROUP }}" shell=/bin/bash home="{{ gvl_home_path }}/{{ SMRT_USER }}" move_home=yes
 
 - name: Create target install dir
   file:
