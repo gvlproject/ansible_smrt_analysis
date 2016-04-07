@@ -2,7 +2,7 @@
   group: name={{ SMRT_GROUP }} state=present
 
 - name: Create SMRT Analysis user
-  user: name={{ SMRT_USER }} comment="SMRT Analysis Owner" group={{ SMRT_GROUP }} shell=/bin/bash
+  user: name="{{ SMRT_USER }}" comment="SMRT Analysis Owner" group="{{ SMRT_GROUP }}" shell=/bin/bash home="/mnt/galaxy/home/{{ SMRT_USER }}" move_home=yes
 
 - name: Create target install dir
   file:
@@ -11,14 +11,14 @@
     owner: "{{ SMRT_USER }}"
     group: "{{ SMRT_USER }}"
     mode: "0755"
-    
+
 - name: Create tmp dir
   file:
     path: "{{ gvl_tmp_path }}"
     state: 'directory'
-    owner: 'ubuntu'
-    group: 'ubuntu'
-    mode: "0777"
+    owner: 'root'
+    group: 'root'
+    mode: "1777"
 
 - name: Download SMRT Analysis packages
   get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700 validate_certs=no

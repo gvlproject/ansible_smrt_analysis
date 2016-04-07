@@ -23,3 +23,4 @@ gvl_tmp_path: "/mnt/gvl/tmp"
 install_env:
     TEMPDIR: "{{ gvl_tmp_path }}"
     TEMP: "{{ gvl_tmp_path}}"
+    TMP: "{{ gvl_tmp_path }}"
