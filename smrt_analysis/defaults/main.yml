@@ -14,7 +14,7 @@ smrt_analysis_package: {
 }
 
 smrt_analysis_patch: {
-    src: "https://s3.amazonaws.com/files.pacb.com/software/smrtanalysis/{{ smrt_version.version }}/smrtanalysis-patch_{{ smrt_version.version }}.{{ smrt_version.build }}.p4.run",
+    src: "https://s3.amazonaws.com/files.pacb.com/software/smrtanalysis/{{ smrt_version.version }}/smrtanalysis-patch_{{ smrt_version.version }}.{{ smrt_version.build }}.p5.run",
     dest: "smrt_patch.run"
 }
 
