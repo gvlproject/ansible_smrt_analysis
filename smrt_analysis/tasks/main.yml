@@ -56,6 +56,12 @@
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
 
+# Fix for: https://github.com/gvlproject/gvl.ansible.smrt_analysis/issues/5
+- name: Enable distributed jobs for SMRT analysis
+  lineinfile: dest="{{ SMRT_ROOT }}/current/redist/tomcat/webapps/smrtportal/WEB-INF/web.xml" regexp="(?<=<param-name>jobsAreDistributed<\/param-name>\n)\s+<param-value>false<\/param-value>" line="<param-value>true</param-value>"
+  sudo: yes
+  sudo_user: "{{ SMRT_USER }}"
+
 - name: Update nginx proxy locations for smrt portal
   template: src=smrtportal.locations.j2 dest=/etc/nginx/sites-enabled/smrtportal.locations
 
