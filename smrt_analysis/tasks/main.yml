@@ -12,13 +12,16 @@
     group: "{{ SMRT_USER }}"
     mode: "0755"
 
-- name: Create tmp dir
+- name: Create new tmp dir
   file:
     path: "{{ gvl_tmp_path }}"
     state: 'directory'
     owner: 'root'
     group: 'root'
     mode: "1777"
+
+- name: Bind new tmp path to /tmp and update fstab
+  mount: opts=bind fstype=none state="mounted" name="{{ gvl_tmp_path }}" src="/tmp"
 
 - name: Download SMRT Analysis packages
   get_url: url={{ item.src }} dest="{{ SMRT_ROOT }}/{{ item.dest }}" mode=0700 validate_certs=no

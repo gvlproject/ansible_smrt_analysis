@@ -18,7 +18,7 @@ smrt_analysis_patch: {
     dest: "smrt_patch.run"
 }
 
-gvl_tmp_path: "/mnt/gvl/tmp"
+gvl_tmp_path: "/mnt/transient_nfs/tmp"
 gvl_home_path: "/mnt/galaxy/home"
 
 install_env:
