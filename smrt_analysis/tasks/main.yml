@@ -1,6 +1,14 @@
 - name: Create SMRT Analysis group
   group: name={{ SMRT_GROUP }} state=present
 
+- name: Make sure home dir exists
+  file:
+    path: "{{ gvl_home_path }}"
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: "0755"
+
 - name: Create SMRT Analysis user
   user: name="{{ SMRT_USER }}" comment="SMRT Analysis Owner" group="{{ SMRT_GROUP }}" shell=/bin/bash home="{{ gvl_home_path }}/{{ SMRT_USER }}" move_home=yes
 
@@ -61,7 +69,7 @@
 
 # Fix for: https://github.com/gvlproject/gvl.ansible.smrt_analysis/issues/5
 - name: Enable distributed jobs for SMRT analysis
-  lineinfile: dest="{{ SMRT_ROOT }}/current/redist/tomcat/webapps/smrtportal/WEB-INF/web.xml" regexp="(?<=<param-name>jobsAreDistributed<\/param-name>\n)\s+<param-value>false<\/param-value>" line="<param-value>true</param-value>"
+  replace: dest="{{ SMRT_ROOT }}/current/redist/tomcat/webapps/smrtportal/WEB-INF/web.xml" regexp="(?<=<param-name>jobsAreDistributed<\/param-name>)\s+<param-value>false<\/param-value>" replace="<param-value>true</param-value>"
   sudo: yes
   sudo_user: "{{ SMRT_USER }}"
 
